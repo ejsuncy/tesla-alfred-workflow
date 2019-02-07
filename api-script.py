@@ -16,6 +16,9 @@ def api_call(args):
     username = wf.stored_data('username')
     log.debug("Found username %s" % username)
 
+    log.debug("Retrieving active vehicle vin from stored data...")
+    active_vin = wf.stored_data('active_vin')
+
     tesla = teslapy.TeslaPy(username)
     log.debug("Connecting to Tesla...")
     tesla.ensure_connection()
@@ -24,11 +27,11 @@ def api_call(args):
 
     if command == "api_climate_on":
         log.debug("Waking vehicle and turning on climate...")
-        tesla.wake_and_auto_condition_first()
+        tesla.wake_and_auto_condition_vin(active_vin)
         log.debug("Vehicle is awake! Climate Turned on!")
     elif command == "api_climate_off":
         log.debug("Waking vehicle and turning off climate...")
-        tesla.turn_off_auto_condition_first()
+        tesla.turn_off_auto_condition_vin(active_vin)
         log.debug("Vehicle is awake! Climate Turned off!")
     else:
         log.debug("Could not understand command %s" % command)
