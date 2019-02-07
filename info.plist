@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>org.dbunked.tesla-alfred</string>
+	<string>org.dbunked.tesla-alfred-workflow</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -221,11 +221,11 @@
 	<key>createdby</key>
 	<string>Dan Bunker</string>
 	<key>description</key>
-	<string>An Alfred Workflow for interacting with the unofficial Tesla API</string>
+	<string>An Alfred Workflow for interacting with a Tesla vehicle via the unofficial Tesla JSON API</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Tesla Alfred</string>
+	<string>Tesla Alfred Workflow</string>
 	<key>objects</key>
 	<array>
 		<dict>
