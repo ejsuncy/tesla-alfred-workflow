@@ -1,6 +1,9 @@
 # Tesla Alfred Workflow
 A workflow for interacting with a Tesla vehicle via the unofficial Tesla JSON API
 
+## Screenshot
+![Workflow in Action](workflow.gif)
+
 ## Requirements
 * [Alfred 3](https://www.alfredapp.com)
 * [Alfred 3 Powerpack](https://www.alfredapp.com/powerpack/) (paid upgrade — it's worth it!)
