@@ -13,6 +13,8 @@ log = None
 def main(wf):
     # type: (Workflow) -> int
 
+    args = wf.args # so magic args are parsed
+
     if wf.update_available:
         wf.add_item('New version available',
                     'Action this item to install the update',
