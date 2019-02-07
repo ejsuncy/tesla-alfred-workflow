@@ -2,10 +2,10 @@
 
 import sys
 
-import version
-from workflow import Workflow, ICON_INFO
-from icons import ICON_CLIMATE, ICON_CLIMATE_OFF, ICON_ACCOUNT, ICON_CAR
 import updatesettings
+import version
+from icons import ICON_CLIMATE, ICON_CLIMATE_OFF, ICON_ACCOUNT, ICON_CAR
+from workflow import Workflow, ICON_INFO
 
 log = None
 
