@@ -14,6 +14,7 @@ def main(wf):
     # type: (Workflow) -> int
 
     args = wf.args # so magic args are parsed
+    log.debug("parsed args: %s" % args)
 
     if wf.update_available:
         wf.add_item('New version available',
