@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: polling
+Version: 0.3.0
+Summary: Powerful polling utility with many configurable options
+Home-page: http://github.com/justiniso/polling
+Author: Justin Iso
+Author-email: justin+polling@justiniso.com
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: mock
+Requires-Dist: pytest
+
+UNKNOWN
+
+
