@@ -60,7 +60,6 @@ def main(wf):
 
 if __name__ == u"__main__":
     wf = Workflow(libraries=['./lib'], update_settings=updatesettings.update_settings)
-    wf.set_last_version(version.version)
     log = wf.logger
     sys.exit(wf.run(main))
 

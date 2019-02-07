@@ -2,9 +2,9 @@
 
 import sys
 
-import version
 from icons import ICON_ACCOUNT, ICON_REFRESH
 from workflow import Workflow
+import updatesettings
 
 log = None
 
@@ -79,8 +79,7 @@ def main(wf):
 
 
 if __name__ == u"__main__":
-    wf = Workflow(libraries=['./lib'])
-    wf.set_last_version(version.version)
+    wf = Workflow(libraries=['./lib'], update_settings=updatesettings.update_settings)
     log = wf.logger
     sys.exit(wf.run(main))
 
