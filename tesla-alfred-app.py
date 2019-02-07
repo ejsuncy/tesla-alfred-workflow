@@ -3,14 +3,22 @@
 import sys
 
 import version
-from workflow import Workflow
+from workflow import Workflow, ICON_INFO
 from icons import ICON_CLIMATE, ICON_CLIMATE_OFF, ICON_ACCOUNT, ICON_CAR
+import updatesettings
 
 log = None
 
 
 def main(wf):
     # type: (Workflow) -> int
+
+    if wf.update_available:
+        wf.add_item('New version available',
+                    'Action this item to install the update',
+                    autocomplete='workflow:update',
+                    valid=False,
+                    icon=ICON_INFO)
 
     username = wf.stored_data('username')
 
@@ -51,7 +59,7 @@ def main(wf):
 
 
 if __name__ == u"__main__":
-    wf = Workflow(libraries=['./lib'])
+    wf = Workflow(libraries=['./lib'], update_settings=updatesettings.update_settings)
     wf.set_last_version(version.version)
     log = wf.logger
     sys.exit(wf.run(main))
