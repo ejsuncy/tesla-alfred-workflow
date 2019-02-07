@@ -168,6 +168,9 @@ def build_workflow(workflow_dir, outputdir, overwrite=False, verbose=False):
     elif os.path.exists(u'version'):
         with open('version') as fp:
             version = fp.read().strip().decode('utf-8')
+    elif os.path.exists(u'version.py'):
+        import version as wf_version
+        version = wf_version.version
 
     name = safename(info[u'name'])
     zippath = os.path.join(outputdir, name)
