@@ -408,7 +408,10 @@ class PytestPluginManager(PluginManager):
                 continue
             conftestpath = parent.join("conftest.py")
             if conftestpath.isfile():
-                mod = self._importconftest(conftestpath)
+                # Use realpath to avoid loading the same conftest twice
+                # with build systems that create build directories containing
+                # symlinks to actual files.
+                mod = self._importconftest(conftestpath.realpath())
                 clist.append(mod)
         self._dirpath2confmods[directory] = clist
         return clist
@@ -437,7 +440,7 @@ class PytestPluginManager(PluginManager):
                     and not self._using_pyargs
                 ):
                     from _pytest.deprecated import (
-                        PYTEST_PLUGINS_FROM_NON_TOP_LEVEL_CONFTEST
+                        PYTEST_PLUGINS_FROM_NON_TOP_LEVEL_CONFTEST,
                     )
 
                     fail(
@@ -559,8 +562,8 @@ def _get_plugin_specs_as_list(specs):
     which case it is returned as a list. Specs can also be `None` in which case an
     empty list is returned.
     """
-    if specs is not None:
-        if isinstance(specs, str):
+    if specs is not None and not isinstance(specs, types.ModuleType):
+        if isinstance(specs, six.string_types):
             specs = specs.split(",") if specs else []
         if not isinstance(specs, (list, tuple)):
             raise UsageError(
@@ -648,8 +651,27 @@ class Config(object):
         return self.pluginmanager.get_plugin("terminalreporter")._tw
 
     def pytest_cmdline_parse(self, pluginmanager, args):
-        # REF1 assert self == pluginmanager.config, (self, pluginmanager.config)
-        self.parse(args)
+        try:
+            self.parse(args)
+        except UsageError:
+
+            # Handle --version and --help here in a minimal fashion.
+            # This gets done via helpconfig normally, but its
+            # pytest_cmdline_main is not called in case of errors.
+            if getattr(self.option, "version", False) or "--version" in args:
+                from _pytest.helpconfig import showversion
+
+                showversion(self)
+            elif (
+                getattr(self.option, "help", False) or "--help" in args or "-h" in args
+            ):
+                self._parser._getparser().print_help()
+                sys.stdout.write(
+                    "\nNOTE: displaying only minimal help due to UsageError.\n\n"
+                )
+
+            raise
+
         return self
 
     def notify_exception(self, excinfo, option=None):
@@ -760,21 +782,32 @@ class Config(object):
         for name in _iter_rewritable_modules(package_files):
             hook.mark_rewrite(name)
 
-    def _validate_args(self, args):
+    def _validate_args(self, args, via):
         """Validate known args."""
-        self._parser.parse_known_and_unknown_args(
-            args, namespace=copy.copy(self.option)
-        )
+        self._parser._config_source_hint = via
+        try:
+            self._parser.parse_known_and_unknown_args(
+                args, namespace=copy.copy(self.option)
+            )
+        finally:
+            del self._parser._config_source_hint
+
         return args
 
     def _preparse(self, args, addopts=True):
         if addopts:
             env_addopts = os.environ.get("PYTEST_ADDOPTS", "")
             if len(env_addopts):
-                args[:] = self._validate_args(shlex.split(env_addopts)) + args
+                args[:] = (
+                    self._validate_args(shlex.split(env_addopts), "via PYTEST_ADDOPTS")
+                    + args
+                )
         self._initini(args)
         if addopts:
-            args[:] = self._validate_args(self.getini("addopts")) + args
+            args[:] = (
+                self._validate_args(self.getini("addopts"), "via addopts config") + args
+            )
+
         self._checkversion()
         self._consider_importhook(args)
         self.pluginmanager.consider_preparse(args)

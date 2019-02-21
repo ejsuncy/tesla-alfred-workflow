@@ -150,10 +150,10 @@ class ApproxNumpy(ApproxBase):
 
         if np.isscalar(actual):
             for i in np.ndindex(self.expected.shape):
-                yield actual, np.asscalar(self.expected[i])
+                yield actual, self.expected[i].item()
         else:
             for i in np.ndindex(self.expected.shape):
-                yield np.asscalar(actual[i]), np.asscalar(self.expected[i])
+                yield actual[i].item(), self.expected[i].item()
 
 
 class ApproxMapping(ApproxBase):
@@ -620,6 +620,14 @@ def raises(expected_exception, *args, **kwargs):
            ...         raise ValueError("value must be <= 10")
            ...
            >>> assert exc_info.type is ValueError
+
+    **Using with** ``pytest.mark.parametrize``
+
+    When using :ref:`pytest.mark.parametrize ref`
+    it is possible to parametrize tests such that
+    some runs raise an exception and others do not.
+
+    See :ref:`parametrizing_conditional_raising` for an example.
 
     **Legacy form**
 

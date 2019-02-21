@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import functools
 import inspect
+import itertools
 import sys
 import warnings
 from collections import defaultdict
@@ -13,11 +14,10 @@ from collections import OrderedDict
 import attr
 import py
 import six
-from more_itertools import flatten
-from py._code.code import FormattedExcinfo
 
 import _pytest
 from _pytest import nodes
+from _pytest._code.code import FormattedExcinfo
 from _pytest._code.code import TerminalRepr
 from _pytest.compat import _format_args
 from _pytest.compat import _PytestWrapper
@@ -307,8 +307,8 @@ class FuncFixtureInfo(object):
     # fixture names specified via usefixtures and via autouse=True in fixture
     # definitions.
     initialnames = attr.ib(type=tuple)
-    names_closure = attr.ib()  # type: List[str]
-    name2fixturedefs = attr.ib()  # type: List[str, List[FixtureDef]]
+    names_closure = attr.ib()  # List[str]
+    name2fixturedefs = attr.ib()  # List[str, List[FixtureDef]]
 
     def prune_dependency_tree(self):
         """Recompute names_closure from initialnames and name2fixturedefs
@@ -658,12 +658,6 @@ class SubRequest(FixtureRequest):
 
     def addfinalizer(self, finalizer):
         self._fixturedef.addfinalizer(finalizer)
-
-
-class ScopeMismatchError(Exception):
-    """ A fixture function tries to use a different fixture function which
-    which has a lower scope (e.g. a Session one calls a function one)
-    """
 
 
 scopes = "session package module class function".split()
@@ -1115,7 +1109,7 @@ class FixtureManager(object):
             argnames = getfuncargnames(func, cls=cls)
         else:
             argnames = ()
-        usefixtures = flatten(
+        usefixtures = itertools.chain.from_iterable(
             mark.args for mark in node.iter_markers(name="usefixtures")
         )
         initialnames = tuple(usefixtures) + argnames

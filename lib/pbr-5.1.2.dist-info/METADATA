@@ -1,14 +1,14 @@
 Metadata-Version: 2.1
 Name: pbr
-Version: 5.1.1
+Version: 5.1.2
 Summary: Python Build Reasonableness
 Home-page: https://docs.openstack.org/pbr/latest/
 Author: OpenStack
-Author-email: openstack-dev@lists.openstack.org
+Author-email: openstack-discuss@lists.openstack.org
 License: UNKNOWN
+Project-URL: Documentation, https://docs.openstack.org/pbr/
 Project-URL: Source Code, https://git.openstack.org/cgit/openstack-dev/pbr/
 Project-URL: Bug Tracker, https://bugs.launchpad.net/pbr/
-Project-URL: Documentation, https://docs.openstack.org/pbr/
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Environment :: Console
