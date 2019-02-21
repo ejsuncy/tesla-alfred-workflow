@@ -54,6 +54,8 @@ You can add more patterns in the [workflow-build.py file](workflow-build.py) to 
  
 
 ## Release Notes
+### `v0.0.7`
+* Update teslajson library to support polling API commands, resolves issue where sending API command raises ContinuePollingException
 ### `v0.0.1`
 * Initial release
 
