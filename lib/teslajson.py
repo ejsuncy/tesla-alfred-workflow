@@ -170,10 +170,15 @@ class Vehicle(dict):
     def get(self, command):
         """Utility command to get data from API"""
         return self.connection.get('vehicles/%i/%s' % (self['id'], command))
-    
-    def post(self, command, data={}):
+
+    def post(self, command, data={}, timeout=35, step=3):
         """Utility command to post data to API"""
-        return self.connection.post('vehicles/%i/%s' % (self['id'], command), data)
+        return polling.poll(
+            lambda: self.connection.post('vehicles/%i/%s' % (self['id'], command), data) is not None,
+            ignore_exceptions=(ContinuePollingError,),
+            timeout=timeout,
+            step=step,
+        )
 
 
 class ContinuePollingError(Exception):

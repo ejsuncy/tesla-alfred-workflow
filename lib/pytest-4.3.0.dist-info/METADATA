@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pytest
-Version: 4.1.1
+Version: 4.3.0
 Summary: pytest: simple powerful testing with Python
 Home-page: https://docs.pytest.org/en/latest/
 Author: Holger Krekel, Bruno Oliveira, Ronny Pfannschmidt, Floris Bruynooghe, Brianna Laugher, Florian Bruhin and others
@@ -34,11 +34,12 @@ Requires-Dist: py (>=1.5.0)
 Requires-Dist: six (>=1.10.0)
 Requires-Dist: setuptools
 Requires-Dist: attrs (>=17.4.0)
-Requires-Dist: more-itertools (>=4.0.0)
 Requires-Dist: atomicwrites (>=1.0)
 Requires-Dist: pluggy (>=0.7)
 Requires-Dist: funcsigs ; python_version < "3.0"
 Requires-Dist: pathlib2 (>=2.2.0) ; python_version < "3.6"
+Requires-Dist: more-itertools (<6.0.0,>=4.0.0) ; python_version <= "2.7"
+Requires-Dist: more-itertools (>=4.0.0) ; python_version > "2.7"
 Requires-Dist: colorama ; sys_platform == "win32"
 Provides-Extra: testing
 Requires-Dist: hypothesis (>=3.56) ; extra == 'testing'

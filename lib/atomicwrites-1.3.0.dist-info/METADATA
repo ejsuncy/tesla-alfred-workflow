@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: atomicwrites
-Version: 1.2.1
+Version: 1.3.0
 Summary: Atomic file writes.
 Home-page: https://github.com/untitaker/python-atomicwrites
 Author: Markus Unterwaditzer
