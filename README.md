@@ -9,7 +9,7 @@ A workflow for interacting with a Tesla vehicle via the unofficial Tesla JSON AP
 * [Alfred 3 Powerpack](https://www.alfredapp.com/powerpack/) (paid upgrade — it's worth it!)
 
 ## Installation
-* Download the latest github release and open it with Alfred
+* Download the [latest github release](https://github.com/ejsuncy/tesla-alfred-workflow/releases/latest) and open it with Alfred
 
 ## Software Updates
 * This workflow auto-updates to the latest release by checking the repository once daily and prompting the user to install the update.
