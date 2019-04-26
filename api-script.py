@@ -2,6 +2,7 @@ import sys
 import argparse
 import json
 import version
+from urllib2 import HTTPError
 from workflow import Workflow
 
 log = None
@@ -20,22 +21,30 @@ def api_call(args):
     active_vin = wf.stored_data('active_vin')
 
     tesla = teslapy.TeslaPy(username)
-    log.debug("Connecting to Tesla...")
-    tesla.ensure_connection()
 
     variables = {'command' : command}
 
-    if command == "api_climate_on":
-        log.debug("Waking vehicle and turning on climate...")
-        tesla.wake_and_auto_condition_vin(active_vin)
-        log.debug("Vehicle is awake! Climate Turned on!")
-    elif command == "api_climate_off":
-        log.debug("Waking vehicle and turning off climate...")
-        tesla.turn_off_auto_condition_vin(active_vin)
-        log.debug("Vehicle is awake! Climate Turned off!")
-    else:
-        log.debug("Could not understand command %s" % command)
-        variables['command'] = variables['command'] + ' failed!'
+    log.debug("Connecting to Tesla...")
+    try:
+        tesla.ensure_connection()
+
+        if command == "api_climate_on":
+            log.debug("Waking vehicle and turning on climate...")
+            tesla.wake_and_auto_condition_vin(active_vin)
+            log.debug("Vehicle is awake! Climate Turned on!")
+        elif command == "api_climate_off":
+            log.debug("Waking vehicle and turning off climate...")
+            tesla.turn_off_auto_condition_vin(active_vin)
+            log.debug("Vehicle is awake! Climate Turned off!")
+        else:
+            log.debug("Could not understand command %s" % command)
+            variables['command'] = variables['command'] + ' failed!'
+
+    except HTTPError as e:
+        if e.getcode() == 401:
+            command += ": Unauthorized. Try resetting your Tesla Credentials."
+        else:
+            raise e
 
     alfred_workflow = {'arg': variables['command'], 'variables': variables}
 

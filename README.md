@@ -54,6 +54,8 @@ You can add more patterns in the [workflow-build.py file](workflow-build.py) to 
  
 
 ## Release Notes
+### `v.0.0.8`
+* Handle Unauthorized api response to prompt user to try resetting Tesla credentials.
 ### `v0.0.7`
 * Update teslajson library to support polling API commands, resolves issue where sending API command raises ContinuePollingException
 ### `v0.0.1`
