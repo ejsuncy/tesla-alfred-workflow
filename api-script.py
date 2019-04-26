@@ -43,6 +43,7 @@ def api_call(args):
     except HTTPError as e:
         if e.getcode() == 401:
             command += ": Unauthorized. Try resetting your Tesla Credentials."
+            variables['command'] = command
         else:
             raise e
 
